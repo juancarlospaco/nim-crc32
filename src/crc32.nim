@@ -1,12 +1,11 @@
-#!/usr/bin/nim c -r
+type
+  TCrc32* = uint32
 
-import strutils
+
+const InitCrc32* = TCrc32(0)
 
 
-type TCrc32* = uint32
-const InitCrc32* = TCrc32(-1)
-
-proc createCrcTable(): array[0..255, TCrc32] =
+func createCrcTable(): array[0..255, TCrc32] {.inline.} =
   for i in 0..255:
     var rem = TCrc32(i)
     for j in 0..7:
@@ -17,10 +16,10 @@ proc createCrcTable(): array[0..255, TCrc32] =
 
 const crc32table = createCrcTable()
 
-proc updateCrc32(c: char, crc: var TCrc32) =
+func updateCrc32(c: char, crc: var TCrc32) {.inline.} =
   crc = (crc shr 8) xor crc32table[(crc and 0xff) xor uint32(ord(c))]
 
-proc crc32*(s: string): TCrc32 =
+func crc32*(s: string): TCrc32 =
   result = InitCrc32
   for c in s:
     updateCrc32(c, result)
@@ -48,4 +47,5 @@ proc crc32FromFile*(filename: string): TCrc32 =
 
 
 when is_main_module:
+  from strutils import toHex
   echo crc32("The quick brown fox jumps over the lazy dog.").int64.toHex(8)
