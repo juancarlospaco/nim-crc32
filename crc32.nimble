@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.0"
+version       = "0.1.1"
 author        = "juancarlospaco"
 description   = "CRC32, 2 proc, copied from RosettaCode."
 license       = "MIT"

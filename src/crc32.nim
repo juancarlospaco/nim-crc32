@@ -1,5 +1,11 @@
+from strutils import toHex
+
 type
   TCrc32* = uint32
+
+
+proc `$`*(crc: TCrc32): string =
+  result = crc.int64.toHex(8)
 
 
 const InitCrc32* = TCrc32(0)
@@ -47,5 +53,4 @@ proc crc32FromFile*(filename: string): TCrc32 =
 
 
 when is_main_module:
-  from strutils import toHex
-  echo crc32("The quick brown fox jumps over the lazy dog.").int64.toHex(8)
+  echo crc32("The quick brown fox jumps over the lazy dog.")
