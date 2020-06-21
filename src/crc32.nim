@@ -8,7 +8,7 @@ proc `$`*(crc: TCrc32): string =
   result = crc.int64.toHex(8)
 
 
-const InitCrc32* = TCrc32(0)
+const InitCrc32* = TCrc32(0xFFFFFFFF) # https://github.com/juancarlospaco/nim-crc32/issues/2
 
 
 func createCrcTable(): array[0..255, TCrc32] {.inline.} =
