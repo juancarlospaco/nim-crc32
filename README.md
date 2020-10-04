@@ -1,4 +1,4 @@
-# nim-crc32
+# CRC32
 
 CRC32 for Nim, 2 proc, based from RosettaCode.
 Its just a `proc` so no much to document about it, just pass the thingy you want to do CRC.
