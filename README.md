@@ -7,6 +7,13 @@ Its just a `proc` so no much to document about it, just pass the thingy you want
 - Uses `system.nim` only, does not import anything from stdlib.
 
 
+# Use
+
+```nim
+assert $crc32("The quick brown fox jumps over the lazy dog.") == "519025E9"
+```
+
+
 # Install
 
 ```

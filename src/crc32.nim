@@ -58,6 +58,7 @@ proc crc32FromFile*(filename: string): TCrc32 =
 
 
 when is_main_module:
+  assert $crc32("The quick brown fox jumps over the lazy dog.") == "519025E9"
   echo crc32("The quick brown fox jumps over the lazy dog.")
   echo crc32(" ")
   echo crc32("")
