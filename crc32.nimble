@@ -1,7 +1,7 @@
-version     = "0.1.1"
-author      = "juancarlospaco"
-description = "CRC32, 2 proc, copied from RosettaCode."
+version     = "0.5.0"
+author      = "Juan_Carlos"
+description = "CRC-32 In-Place"
 license     = "MIT"
 srcDir      = "src"
 
-requires "nim >= 0.20.0"
+requires "nim >= 1.4.2"

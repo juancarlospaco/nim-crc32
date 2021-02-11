@@ -1,64 +1,74 @@
-type
-  TCrc32* = uint32
-
-
-func `$`*(crc: TCrc32): string =
-  result = newString(8)
+template toString(crc: var uint32; s: var string) =
+  s.setLen 8
   var n = crc.int64
-  result[7] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[7] = "0123456789ABCDEF"[int(n and 0xF)]
   n = n shr 4
-  result[6] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[6] = "0123456789ABCDEF"[int(n and 0xF)]
   n = n shr 4
-  result[5] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[5] = "0123456789ABCDEF"[int(n and 0xF)]
   n = n shr 4
-  result[4] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[4] = "0123456789ABCDEF"[int(n and 0xF)]
   n = n shr 4
-  result[3] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[3] = "0123456789ABCDEF"[int(n and 0xF)]
   n = n shr 4
-  result[2] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[2] = "0123456789ABCDEF"[int(n and 0xF)]
   n = n shr 4
-  result[1] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[1] = "0123456789ABCDEF"[int(n and 0xF)]
   n = n shr 4
-  result[0] = "0123456789ABCDEF"[int(n and 0xF)]
+  s[0] = "0123456789ABCDEF"[int(n and 0xF)]
 
-
-const InitCrc32* = TCrc32(0xFFFFFFFF) # https://github.com/juancarlospaco/nim-crc32/issues/2
-
-func createCrcTable(): array[0..255, TCrc32] =
-  for i in 0..255:
-    var rem = TCrc32(i)
+func createCrcTable(): array[0..255, uint32] =
+  for i in 0.uint32..255.uint32:
+    var rem = i
     for j in 0..7:
-      if (rem and 1) > 0'u32: rem = (rem shr 1) xor TCrc32(0xedb88320)
+      if (rem and 1) > 0'u32: rem = (rem shr 1) xor uint32(0xedb88320)
       else: rem = rem shr 1
     result[i] = rem
 
-const crc32table = createCrcTable()
+template updateCrc32(c: char, crc: var uint32) =
+  crc = (crc shr 8) xor static(createCrcTable())[uint32(crc and 0xff) xor uint32(ord(c))]
 
-template updateCrc32(c: char, crc: var TCrc32) =
-  crc = (crc shr 8) xor crc32table[(crc and 0xff) xor uint32(ord(c))]
+func crc32*(input: var string) =
+  var crcuint = uint32(0xFFFFFFFF)
+  for c in input: updateCrc32(c, crcuint)
+  crcuint = not crcuint
+  toString(crcuint, input)
 
-func crc32*(s: string): TCrc32 =
-  result = InitCrc32
-  for c in s: updateCrc32(c, result)
-  result = not result
-
-proc crc32FromFile*(filename: string): TCrc32 =
-  assert filename.len > 0, "filename must not be empty string"
-  const bufSize = 8192
-  var bin: File
-  result = InitCrc32
-  if not open(bin, filename): return
-  var buf {.noinit.}: array[bufSize, char]
+proc crc32FromFile*(path: var string; bufferSize: static[Positive] = 8192) =
+  assert path.len > 0, "filename must not be empty string"
+  var
+    bin: File
+    crcuint = uint32(0xFFFFFFFF)
+    buf {.noinit.}: array[bufferSize, char]
+  if not open(bin, path): return
   while true:
-    var readBytes = bin.readChars(buf, 0, bufSize)
-    for i in countup(0, readBytes - 1): updateCrc32(buf[i], result)
-    if readBytes != bufSize: break
+    var readBytes = bin.readChars(buf, 0, bufferSize)
+    for i in countup(0, readBytes - 1): updateCrc32(buf[i], crcuint)
+    if readBytes != bufferSize: break
   close(bin)
-  result = not result
+  crcuint = not crcuint
+  toString(crcuint, path)
 
 
-when is_main_module:
-  assert $crc32("The quick brown fox jumps over the lazy dog.") == "519025E9"
-  echo crc32("The quick brown fox jumps over the lazy dog.")
-  echo crc32(" ")
-  echo crc32("")
+runnableExamples:
+  from std/sugar import dup
+
+  var x = "The quick brown fox jumps over the lazy dog."
+  crc32(x)  ## In-Place.
+  doAssert x == "519025E9"
+  doAssert "The quick brown fox jumps over the lazy dog.".dup(crc32) == "519025E9"  ## Out-Place.
+
+  var e = " "
+  crc32(e)  ## In-Place.
+  doAssert e == "E96CCF45"
+  doAssert " ".dup(crc32) == "E96CCF45"  ## Out-Place.
+
+  var z = ""
+  crc32(z)   ## In-Place.
+  doAssert z == "00000000"
+  doAssert "".dup(crc32) == "00000000"  ## Out-Place.
+
+  var f = "crc32.nim"
+  crc32FromFile(f)  ## In-Place.
+  echo f
+  echo "crc32.nim".dup(crc32FromFile)  ## Out-Place.
