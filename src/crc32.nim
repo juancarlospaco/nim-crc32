@@ -25,8 +25,9 @@ func createCrcTable(): array[0..255, uint32] =
       else: rem = rem shr 1
     result[i] = rem
 
-template updateCrc32(c: char, crc: var uint32) =
-  crc = (crc shr 8) xor static(createCrcTable())[uint32(crc and 0xff) xor uint32(ord(c))]
+template updateCrc32(c: char; crc: var uint32) =
+  crc = (crc shr 8) xor static(createCrcTable())[uint32(crc and
+      0xff) xor uint32(ord(c))]
 
 func crc32*(input: var string) =
   var crcuint = uint32(0xFFFFFFFF)
@@ -54,21 +55,22 @@ runnableExamples:
   from std/sugar import dup
 
   var x = "The quick brown fox jumps over the lazy dog."
-  crc32(x)  ## In-Place.
+  crc32(x) ## In-Place.
   doAssert x == "519025E9"
-  doAssert "The quick brown fox jumps over the lazy dog.".dup(crc32) == "519025E9"  ## Out-Place.
+  doAssert "The quick brown fox jumps over the lazy dog.".dup(crc32) ==
+      "519025E9" ## Out-Place.
 
   var e = " "
-  crc32(e)  ## In-Place.
+  crc32(e) ## In-Place.
   doAssert e == "E96CCF45"
-  doAssert " ".dup(crc32) == "E96CCF45"  ## Out-Place.
+  doAssert " ".dup(crc32) == "E96CCF45" ## Out-Place.
 
   var z = ""
-  crc32(z)   ## In-Place.
+  crc32(z) ## In-Place.
   doAssert z == "00000000"
-  doAssert "".dup(crc32) == "00000000"  ## Out-Place.
+  doAssert "".dup(crc32) == "00000000" ## Out-Place.
 
   var f = "crc32.nim"
-  crc32FromFile(f)  ## In-Place.
+  crc32FromFile(f) ## In-Place.
   echo f
-  echo "crc32.nim".dup(crc32FromFile)  ## Out-Place.
+  echo "crc32.nim".dup(crc32FromFile) ## Out-Place.
