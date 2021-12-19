@@ -43,10 +43,12 @@ proc crc32FromFile*(path: var string; bufferSize: static[Positive] = 8192) =
     buf {.noinit.}: array[bufferSize, char]
   if not open(bin, path): return
   while true:
-    when (NimMinor > 4):
-      var readBytes = bin.readChars(toOpenArray(buf, 0, bufferSize - 1))
-    else:
+    when (NimMajor < 1 or (NimMajor == 1 and NimMinor < 5)):
+      # use old readChars overload for Nim versions < 1.5
       var readBytes = bin.readChars(buf, 0, bufferSize)
+    else:
+      # use new readChars overload for Nim versions >= 1.5
+      var readBytes = bin.readChars(toOpenArray(buf, 0, bufferSize - 1))
     for i in countup(0, readBytes - 1): updateCrc32(buf[i], crcuint)
     if readBytes != bufferSize: break
   close(bin)
