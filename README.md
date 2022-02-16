@@ -39,3 +39,8 @@ echo "crc32.nim".dup(crc32FromFile)  ## Out-Place.
 ```
 nimble install crc32
 ```
+
+
+# Stars
+
+![](https://starchart.cc/juancarlospaco/nim-crc32.svg)
