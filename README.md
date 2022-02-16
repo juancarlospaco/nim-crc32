@@ -44,3 +44,4 @@ nimble install crc32
 # Stars
 
 ![](https://starchart.cc/juancarlospaco/nim-crc32.svg)
+:star: [@juancarlospaco](https://github.com/juancarlospaco '2022-02-16')	
