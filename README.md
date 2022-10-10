@@ -46,3 +46,4 @@ nimble install crc32
 ![](https://starchart.cc/juancarlospaco/nim-crc32.svg)
 :star: [@juancarlospaco](https://github.com/juancarlospaco '2022-02-16')	
 :star: [@adokitkat](https://github.com/adokitkat '2022-07-05')	
+:star: [@elcritch](https://github.com/elcritch '2022-10-10')	
