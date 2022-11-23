@@ -48,3 +48,4 @@ nimble install crc32
 :star: [@adokitkat](https://github.com/adokitkat '2022-07-05')	
 :star: [@elcritch](https://github.com/elcritch '2022-10-10')	
 :star: [@hamidb80](https://github.com/hamidb80 '2022-10-10')	
+:star: [@amit-gshe](https://github.com/amit-gshe '2022-11-23')	
