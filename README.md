@@ -49,3 +49,4 @@ nimble install crc32
 :star: [@elcritch](https://github.com/elcritch '2022-10-10')	
 :star: [@hamidb80](https://github.com/hamidb80 '2022-10-10')	
 :star: [@amit-gshe](https://github.com/amit-gshe '2022-11-23')	
+:star: [@Seanld](https://github.com/Seanld '2024-08-27')	
