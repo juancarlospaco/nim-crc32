@@ -50,3 +50,4 @@ nimble install crc32
 :star: [@hamidb80](https://github.com/hamidb80 '2022-10-10')	
 :star: [@amit-gshe](https://github.com/amit-gshe '2022-11-23')	
 :star: [@Seanld](https://github.com/Seanld '2024-08-27')	
+:star: [@rebase](https://github.com/rebase '2025-03-29')	
