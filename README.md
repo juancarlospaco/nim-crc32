@@ -52,3 +52,4 @@ nimble install crc32
 :star: [@Seanld](https://github.com/Seanld '2024-08-27')	
 :star: [@rebase](https://github.com/rebase '2025-03-29')	
 :star: [@Tayzonxperia](https://github.com/Tayzonxperia '2025-12-29')	
+:star: [@gustavo-veiga](https://github.com/gustavo-veiga '2026-04-02')	
